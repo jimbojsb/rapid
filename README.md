@@ -16,7 +16,7 @@ expects a middleware as an argument, any of the following methods may be
 used
 
 #### Passing an instance
-If passing an instance, your instance should implement `Rapid\MiddlewareInterface`; 
+If passing an instance, your instance should implement `Rapid\MiddlewareInterface`
 This method is useful if you need to do custom instantiation of an 
 instance for dependency injection.
 
@@ -44,11 +44,10 @@ $application->use(function(ServerRequestInterface $request, ResponseInterface $r
 ```
 
 #### Using a middleware factory
-`Rapid\Application` optionall accepts a `callable` that should be used
-to produce middlewares when a classname is specified. This callable can 
-be responsible for wiring and dependency injection as you see fit. The
-factory should be a `callable` that takes one argument (a class name) and
-returns a properly wired middleware of that class.
+`Rapid\Application` optionall accepts a `callable` that should be used to produce middlewares when a classname is specified. 
+This callable can be responsible for wiring and dependency injection as you see fit. 
+The factory should be a `callable` that takes one argument (a class name) and returns a properly wired middleware of that class.
+An interface, `Radpid\MiddlewareFactoryInterface` is provided for convenience but not required.
 
 ```php
 $application->setMiddlewareFactory($factory);
@@ -105,7 +104,7 @@ $application->route("/test")
             ->post(PostMiddleware::class);
 ```
 
-#### Routing
+## Routing
 Rapid includes a built-in router / url matcher.
 
 URLs that start with `/` and contain no special operators as noted below are treated as an exact string match to the request path. In the following exmaple, GetMiddleware will be invoked if the path of the request uri is exactly `/test`
