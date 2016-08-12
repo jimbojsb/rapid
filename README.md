@@ -4,7 +4,7 @@ Rapid is a PSR-7 / middleware dispatcher inpsired by Express.js.
 ## Installation
 
 ## Create your application
-```
+```php
 $application = new Rapid\Application();
 // add middlewares here
 $application->run();
