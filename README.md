@@ -90,12 +90,6 @@ $application->route(["POST", "PUT"], "/test", TestMiddleware::class);
 $application->get("/test", GetMiddleware::class);
 $application->post("/test", PostMiddleware::class);
 ```
-Altnerate syntax:
-```php
-$application->route("/test")
-            ->get(GetMiddleware::class)
-            ->post(PostMiddleware::class);
-```
 
 ## Routing
 Rapid includes a built-in router / url matcher.
