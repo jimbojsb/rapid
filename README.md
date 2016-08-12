@@ -2,6 +2,9 @@
 Rapid is a PSR-7 / middleware dispatcher inpsired by Express.js.
 
 ## Installation
+```
+$ composer require offers/rapid
+```
 
 ## Create your application
 ```php
