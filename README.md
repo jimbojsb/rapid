@@ -138,8 +138,10 @@ $application->get(function($request) {
 ```
 
 ## Handling errors
-Rapid error handlers are also defined as middlewares. Error middlewares have a slightly different signature, and are described in their own `Rapid\Middleware\ErrorMiddlewareInterface`. 
-The first argument to an error handling middleware is a `Throwable`. Rapid catches `Throwable` in it's dispatch cycle, so PHP 7.x `Error` throws are caught as well and can be processed by these middlewares. 
+Rapid error handlers are also defined as middlewares. 
+Error middlewares have a slightly different signature, and are described in their own `Rapid\Middleware\ErrorMiddlewareInterface`. 
+The first argument to an error handling middleware is a `Throwable`. 
+Rapid catches `Throwable` in it's dispatch cycle, so PHP 7.x `Error` throws are caught as well and can be processed by these middlewares. 
 Before invoking the first error middleware, Rapid will set the `Throwable` as an attribute on the `$request` and change the `$response` status code to 404 or 500 if applicable. 
 Rapid includes 2 special `Exceptions` for routing issues: `Rapid\Exception\MethodNotAllowedException` and `Rapid\Exception\NoRouteMatchException`.
 
