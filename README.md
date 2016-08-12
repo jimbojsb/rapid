@@ -1,5 +1,7 @@
 # Rapid
 Rapid is a PSR-7 / middleware dispatcher inpsired by Express.js.
+Rapid's only external dependency is the PSR-7 `Psr\HttpMessage` interfaces. 
+Rapid requires PHP 7.0 or above.
 
 ## Installation
 ```
