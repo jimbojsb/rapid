@@ -105,6 +105,32 @@ $application->route("/test")
             ->post(PostMiddleware::class);
 ```
 
+#### Routing
+Rapid includes a built-in router / url matcher.
+
+URLs that start with `/` and contain no `{` are treated as an exact string match to the request path. In the following exmaple, GetMiddleware will be invoked if the path of the request uri is exactly `/test`
+```php
+$application->get("/test", GetMiddleware::class);
+```
+
+URLs that start with a `/` and contain a `:` are matched with a  generated regular expression. Path segments surrounded with `{}` are treated as variables and the values of those segments will be set as attributes on the request object.
+In the following example, a request path of `/test/myslug` results in a request attribute of `slug` being set to `myslug`.
+```php
+$application->get("/test/{slug}", GetMiddleware::class);
+```
+
+At the end of any given path prefix, a special marker `{?}` may be added that treats the remainder of any path match as a Rails-style key-value route.
+In the following example, a request path of `/test/param1/value1/param2/value2` results in a request attributes of `param1` and `param2` being set to `value1` and `value2` respectively. 
+*Note: This route matches on 0 or more options, so it will also match for `/test`* 
+```php
+$application->get("/test{?}", GetMiddleware::class);
+```
+
+Path specifications that are surrounded by backticks are treated as regular expressions and are passed to `preg_match()` as written. If the regeular expression matches, the `$matches` array is set as a request attribute.
+```php
+$application->get("`/test.*?`", GetMiddleware::class);
+```
+
 **Using a custom route matcher**
 Rapid supports using a custom `callable` for route matching. This may be 
 useful in scenarios where a database needs to be consulted to see if a 
