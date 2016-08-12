@@ -11,23 +11,19 @@ $application->run();
 ```
 
 ## Define middlewares
-Rapid accepts several values to represent a middleware. Any place Rapid 
-expects a middleware as an argument, any of the following methods may be 
-used
+Rapid accepts several values to represent a middleware. 
+Any place Rapid expects a middleware as an argument, any of the following methods may be used
 
 #### Passing an instance
 If passing an instance, your instance should implement `Rapid\MiddlewareInterface`
-This method is useful if you need to do custom instantiation of an 
-instance for dependency injection.
+This method is useful if you need to do custom instantiation of an instance for dependency injection.
 
 ```php
 $application->use(new ExampleMiddleware());
 ```
 
 #### Passing a class name
-If your middleware doesn't need any custom instantiation, you can pass
-a class name instead. Your class will not be instantiated unless the
-system actually needs to use that given middleware.
+If your middleware doesn't need any custom instantiation, you can pass a class name instead. Your class will not be instantiated unless the system actually needs to use that given middleware.
 
 ```php
 $application->use(ExampleMiddleware::class);
@@ -54,12 +50,9 @@ $application->setMiddlewareFactory($factory);
 ```
 
 ## Composing and routing middleware
-Middleware is evaluated top-to-bottom as defined in your application 
-bootstrapping. Middleware may be applied to every request or applied 
-using traditional routing methods that are evaluated against an instance 
-of `\Psr\HttpMessage\ServerRequestInterface`; All middlewares will be 
-checked against each request, and multiple matches are permitted and 
-encouraged.
+Middleware is evaluated top-to-bottom as defined in your application bootstrapping. 
+Middleware may be applied to every request or applied using traditional routing methods that are evaluated against an instance of `\Psr\HttpMessage\ServerRequestInterface`. 
+All middlewares will be checked against each request, and multiple matches are permitted and encouraged.
 
 **Apply a middleware to every request**
 ```php
