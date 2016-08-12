@@ -108,12 +108,12 @@ $application->route("/test")
 #### Routing
 Rapid includes a built-in router / url matcher.
 
-URLs that start with `/` and contain no `{` are treated as an exact string match to the request path. In the following exmaple, GetMiddleware will be invoked if the path of the request uri is exactly `/test`
+URLs that start with `/` and contain no special operators as noted below are treated as an exact string match to the request path. In the following exmaple, GetMiddleware will be invoked if the path of the request uri is exactly `/test`
 ```php
 $application->get("/test", GetMiddleware::class);
 ```
 
-URLs that start with a `/` and contain a `:` are matched with a  generated regular expression. Path segments surrounded with `{}` are treated as variables and the values of those segments will be set as attributes on the request object.
+URLs that start with a `/` and contain a `{}` are matched with a system-generated regular expression. Path segments surrounded with `{}` are treated as variables and the values of those segments will be set as attributes on the request object.
 In the following example, a request path of `/test/myslug` results in a request attribute of `slug` being set to `myslug`.
 ```php
 $application->get("/test/{slug}", GetMiddleware::class);
@@ -132,13 +132,10 @@ $application->get("`/test.*?`", GetMiddleware::class);
 ```
 
 **Using a custom route matcher**
-Rapid supports using a custom `callable` for route matching. This may be 
-useful in scenarios where a database needs to be consulted to see if a 
-route matches or not. The callable should take one argument, a `\Psr\HttpMessage\RequestInterface` 
-and return either `false` (no match) or a `\Psr\HttpMessage\RequestInterface` 
-which may be the instance it was passed, or a mutated instance that it has 
-decorated with attributes as necessary. A interface, `Rapid\RouteMatcherInterface` 
-is provided for convenience but is not required.
+
+Rapid supports using a custom `callable` for route matching. This may be useful in scenarios where a database needs to be consulted to see if a route matches or not. 
+The callable should take one argument, a `\Psr\HttpMessage\RequestInterface` and return either `false` (no match) or a `\Psr\HttpMessage\RequestInterface` which may be the instance it was passed, or a mutated instance that it has decorated with attributes as necessary. 
+An interface, `Rapid\RouteMatcherInterface` is provided for convenience but is not required.
 ```php
 $application->get(function($request) {
     if ($request->getUri()->getPath = "/complex-logic") {
@@ -149,18 +146,10 @@ $application->get(function($request) {
 ```
 
 #### Handling errors
-Rapid error handlers are also defined as middlewares. Error middlewares 
-have a slightly different signature, and are described in their own 
-`Rapid\Middleware\ErrorMiddlewareInterface`. The first argument to an 
-error handling middleware is a `Throwable`. Rapid catches `Throwable` in 
-it's dispatch cycle, so PHP 7.x `Error` throws are caught as well and can 
-be processed by these middlewares. Before invoking the first error 
-middleware, 
-
-Rapid will set the `Throwable` as an attribute on the `$request` 
-and change the `$response` status code to 404 or 500 if applicable. Rapid 
-includes 2 special `Exceptions` for routing issues: `Rapid\Exception\MethodNotAllowedException` 
-and `Rapid\Exception\NoRouteMatchException`.
+Rapid error handlers are also defined as middlewares. Error middlewares have a slightly different signature, and are described in their own `Rapid\Middleware\ErrorMiddlewareInterface`. 
+The first argument to an error handling middleware is a `Throwable`. Rapid catches `Throwable` in it's dispatch cycle, so PHP 7.x `Error` throws are caught as well and can be processed by these middlewares. 
+Before invoking the first error middleware, Rapid will set the `Throwable` as an attribute on the `$request` and change the `$response` status code to 404 or 500 if applicable. 
+Rapid includes 2 special `Exceptions` for routing issues: `Rapid\Exception\MethodNotAllowedException` and `Rapid\Exception\NoRouteMatchException`.
 
 ```php
 $application->use(ErrorMiddleware::class);
