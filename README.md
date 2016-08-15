@@ -200,3 +200,8 @@ Rapid includes 2 special `Exceptions` for routing issues: `Rapid\Exception\Metho
 ```php
 $application->use(ErrorMiddleware::class);
 ```
+
+## Extending the base application
+`Rapid\Application` is in itself, a very simple class. It provides an empty `init()` method that will be called for bootstrapping purposes. 
+The default constructor is left purposely without arguments under the assumption that it will likely be overloaded. 
+It is assumed that a user will want to extend the base application class and implement all of the middleware bootstrapping in the `init()` method, and overload the constructor with arguments like a dependency injection container to be used in `init()`.
