@@ -136,6 +136,57 @@ $application->get(function($request) {
 }, DataBackedMiddleware::class);
 ```
 
+## Using middleware pipes
+The convenience methods on the `Rapid\Application` object are actually proxies to the underlying container object `Rapid\MiddlewarePipe`.
+It is possible to use middleware pipes directly for even more flexibility and reusability at bootstrap time.
+
+Create a new middleware pipe with a single middleware and use it:
+```php
+$pipe = new \Radid\MiddlewarePipe(RunAlwaysMiddleware::class);
+$application->use($pipe);
+```
+
+Create a new middleware pipe with multiple middlewares
+```php
+$pipe = new \Radid\MiddlewarePipe([RunAlwaysMiddleware::class, AnotherMiddleware::class]);
+$application->use($pipe);
+```
+
+Add a middleware to an existing pipe
+```php
+$pipe = new \Radid\MiddlewarePipe();
+$myMiddleware = new MyMiddleware();
+$pipe->pipe($myMiddleware);
+```
+
+Middleware pipes are also fully routing-aware. The pipe method will also accept a closure. Inside the closure, you may use the same syntax as the convenience methods on the application object.
+```php
+$pipe = new \Radid\MiddlewarePipe();
+$pipe->pipe(function() {
+    $this->use(MiddlewareOne::class);
+    $this->get('/prefix', PrefixMiddleware::class);
+});
+```
+
+A more concrete example using pipes for organizational purposes. Middleware pipes can be subsituted wherever a middleware would be used.
+```php
+$publicPipe = new \Radid\MiddlewarePipe();
+$publicPipe->pipe(function() {
+   $this->get("/", HomepageMiddleware::class);
+   $this->get("/login", LoginMiddleware::class);
+});
+$application->use($publicPipe);
+
+$privateDirectoryPipe = (new Rapid\MiddlewarePipe())->pipe(function() {
+    $this->get("/user", (new MiddlewarePipe)->pipe(function() {
+        $this->use(AuthMiddleware::class);
+        $this->get("/user/dashboard", DashBoardMiddleware::class);
+        $this->get("/user/settings", SettingsMiddleware::class);    
+    }));
+});
+$application->use($privateDirectoryPipe);
+```
+
 ## Handling errors
 Rapid error handlers are also defined as middlewares. 
 Error middlewares have a slightly different signature, and are described in their own `Rapid\Middleware\ErrorMiddlewareInterface`. 
