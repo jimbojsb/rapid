@@ -1,7 +1,28 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: josh
- * Date: 8/12/16
- * Time: 3:26 PM
- */
+namespace Rapid;
+
+use Rapid\Route\AbstractRoute;
+
+class MiddlewarePipe
+{
+    /** @var AbstractRoute */
+    protected $route;
+    /** @var MiddlewareInterface|MiddlewarePipe */
+    protected $middleware;
+
+    /**
+     * MiddlewarePipe constructor.
+     * @param MiddlewareInterface|MiddlewareInterface[]|MiddlewarePipe $middleware
+     */
+    public function __construct($middleware = null)
+    {
+        if ($middleware != null) {
+            $this->middleware = $middleware;
+        }
+    }
+
+    public function pipe()
+    {
+
+    }
+}
